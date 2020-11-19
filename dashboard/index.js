@@ -1,6 +1,3 @@
-console.log('v3', d3version3.version)
-console.log('v5', d3.version)
-
 function loadcsv(data){
     return d3.csv(data);
 }
@@ -17,10 +14,11 @@ function filterGeo(data){
     return statesGeo;
 }
 
-let USStates = '../data/us-states.json';
+let data1 = '../data/us-states.json';
+let data2 = '../data/Mother_Jones_Mass_Shootings_Database_1982_2020_Sheet1.csv';
 
-let dataset = loadjson(USStates);
-
+let USStates = loadjson(data1);
+let USMassShootings = loadcsv(data2);
 
 var w = 1400;
 var h = 700;
@@ -32,11 +30,10 @@ var svg = d3.select("div#d3-US-map")
 .style("background","#fff")
 .classed("svg-content", true);
 
-var projection = d3version3.geo.albersUsa().translate([w/2, h/2]).scale([1000]);
-var path = d3version3.geo.path().projection(projection);
+var projection = d3v3.geo.albersUsa().translate([w/2, h/2]).scale([1000]);
+var path = d3v3.geo.path().projection(projection);
 
-// drawmap for multiple promises
-/* Promise.all([dataset, dataset1, ...]).then(function(values){
+Promise.all([USStates, USMassShootings]).then(function(values){
     // draw map
  
     svg.selectAll("path")
@@ -45,10 +42,27 @@ var path = d3version3.geo.path().projection(projection);
         .append("path")
         .attr("class","states")
         .attr("d", path)
-}); */
+
+    svg.selectAll("circle")
+        .data(values[1])
+        .enter()
+        .append("circle")
+        .attr("cx", function(d) {
+            return projection([d.longitude, d.latitude])[0];
+            ;})
+        .attr("cy", function(d) {
+            return projection([d.longitude, d.latitude])[1];
+        })
+        .attr("r", function(d) {
+            return Math.sqrt(d.total_victims)*2;
+        })
+        .attr("fill", "#f59494")
+        .style("opacity", 0.60)
+});
+
 
 // drawmap for one promise
-function drawMap(data){
+/* function drawMap(data){
     svg.selectAll("path")
     .data(data.features)
     .enter()
@@ -60,4 +74,23 @@ function drawMap(data){
 
 dataset.then((data)=>{
     return drawMap(data);
+}) */
+
+/*
+test
+
+function maxCol(data){
+    var max = 0;
+    console.log("truc", data[0]);
+    for(var i=0; i < data.length; i++){
+       if (parseInt(data[i].fatalities)>max){ // parseInt to compare value, otherwise, "9" would always be the max (csv values are string)
+           max = parseInt(data[i].fatalities);
+       }
+    }
+    return max;
+}
+
+let max = USMassShootings.then(function(data){
+    return maxCol(data);
 })
+*/
