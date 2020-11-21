@@ -1,5 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+* {
+    font-family: 'Source Sans Pro', sans-serif; /* to change */
+}
+
 .states {
     fill: #f0e4ddcb;
     stroke: #e0cabc;
     stroke-width: 0.5;
+}
+
+#svg-legend {
+    position: absolute;
+    left:610px;
+    top: 180px;
+}
+
+path:hover {
+	fill-opacity: .7;
 }
