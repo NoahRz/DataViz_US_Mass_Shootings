@@ -1,24 +1,4 @@
-function loadcsv(data){
-    return d3.csv(data);
-}
-
-function loadjson(data){
-    return d3.json(data);
-}
-
-function filterGeo(data){
-    statesGeo = [];
-    for(var i=0; i < data.features.length; i++){
-        statesGeo.push(data.features[i].properties.name);
-    }
-    return statesGeo;
-}
-
-let data1 = '../data/us-states.json';
-let data2 = '../data/Mother_Jones_Mass_Shootings_Database_1982_2020_Sheet1.csv';
-
-let USStates = loadjson(data1);
-let USMassShootings = loadcsv(data2);
+import {USStates, USMassShootings} from '../src/utils.js';
 
 var w = 960;
 var h = 500;
@@ -84,13 +64,12 @@ Promise.all([USStates, USMassShootings]).then(function(values){
 
     var max = maxCol(values[1]);
     max = d3.format('.1r')(max);
-    console.log(max);
 
     var size = d3.scaleSqrt()
     .domain([1, max])
     .range([2, Math.sqrt(max)*2])  // Size in pixel
 
-    valuesToShow = [max, 0.5*max, 0.1*max]; //max, median, min
+    var valuesToShow = [max, 0.5*max, 0.1*max]; //max, median, min
 
     // legend
     d3.select("div#d3-US-map")
