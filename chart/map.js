@@ -30,15 +30,77 @@ function maxCol(data){
     return max;
 }
 
-Promise.all([USStates, USMassShootings]).then(function(values){
+function reduce(data){
+    let result = {}
+    
+    for(var i=0; i<data.length;i++){
+        var state = getState(data[i].city_state);
+        if(state in result) {
+            result[state] = result[state] + parseInt(data[i].total_victims)
+        
+        }else {
+            result[state] = parseInt(data[i].total_victims)
+        }
+    }
+    
+    return d3.entries(result);
+}
+
+
+function getState(text){
+    text = text.replace(/\s+/g,'')
+    text = text.split(",")[1];
+    return text;
+}
+
+function removeSpaces(text){
+    return text.replace(/\s+/g,'');
+}
+
+let dataset = USMassShootings.then(function(data){
+    return reduce(data);
+})
+
+console.log(dataset)
+
+Promise.all([USStates, USMassShootings, dataset]).then(function(values){
     // draw map
  
+    var states = [];
+    console.log(values[2].length)
+    for (var i=0; i< values[2].length; i++){
+        states.push(values[2][i].key);
+    }
+    console.log(states);
+
+    function getVictims(usState){
+        for (var i=0; i< values[2].length; i++){
+            if (values[2][i].key == usState) {
+                return values[2][i].value;
+            }
+        }
+        return 0;
+    }
+
+    var myColor = d3.scaleLinear()
+        .domain([-30, d3.max(values[2], function(d) { return +d.value; })])
+        .range(["white", "grey"])
+
     svgMap.selectAll("path")
         .data(values[0].features)
         .enter()
         .append("path")
         .attr("class","states")
         .attr("d", path)
+        .attr("fill", function(d){
+            var usState = removeSpaces(d.properties.name.toString());
+            if(states.includes(usState)){
+                var tot_victims = getVictims(usState)
+                return myColor(tot_victims);
+            }else{
+                return "white";
+            }
+        })
 
     svgMap.selectAll("circle")
         .data(values[1])
