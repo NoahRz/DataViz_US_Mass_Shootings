@@ -2,15 +2,22 @@ import {USMassShootings} from '../src/utils.js';
 
 
 function reduce(data){
-    let result = {'white':0, 'black':0, 'latino':0, 'asian':0, 'other':0}
+    let result = {}
     
     for(var i=0; i<data.length;i++){
-        if(data[i].race.toLowerCase() in result) {
-            result[data[i].race.toLowerCase()] = result[data[i].race.toLowerCase()] + 1
-        } else if (data[i].race.toLowerCase().localeCompare("native american") == 0){
-            result["other"] = result["other"] + 1
+        var loc = data[i].location
+        loc = loc.replace("\n","")
+        if(loc in result) {
+            result[loc] = result[loc] + 1
+        
+        }else {
+            result[loc] = 1
         }
     }
+    result["Other"] = result["Other"] + result["Airport"] + result["Religious"];
+    delete result["Airport"];
+    delete result["Religious"];
+    console.log(result);
     return d3.entries(result);
 } 
 
@@ -27,7 +34,7 @@ var width = 500,
 var radius = Math.min(width, height) / 2 - margin;
 
 
-var svg = d3.select("#ethnicity")
+var svg = d3.select("#places")
   .append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -36,9 +43,9 @@ var svg = d3.select("#ethnicity")
 
 
   function piechart(data){
-      var color = d3.scaleLinear()
-        .domain([-10, d3.max(data, function(d) { return +d.value; }) - 20])
-        .range(["white", "red"])
+      var color = d3.scaleOrdinal()
+        .domain(data)
+        .range(["#ee4e5a", "#ecda9a", "#a9dbda", "#2a5673"])
   
       var pie = d3.pie()
         .value(function(d) {return d.value; });
@@ -49,9 +56,9 @@ var svg = d3.select("#ethnicity")
         .outerRadius(radius)
 
       var newarc = d3.arc()
-        .innerRadius(3 * radius / 5)
+        .innerRadius(2 * radius / 3)
         .outerRadius(radius);
-  
+
       svg
         .selectAll('slices')
         .data(data_ready)
@@ -61,7 +68,7 @@ var svg = d3.select("#ethnicity")
         .attr('fill', function(d){ return(color(d.value)); })
         .attr("stroke", "black")
         .style("stroke-width", "1px")
-        .style("opacity", 0.7)
+        .style("opacity", 0.9)
 
       svg
         .selectAll('slices')
@@ -71,18 +78,18 @@ var svg = d3.select("#ethnicity")
         .text(function(d){ return (d.data.key)})
         .attr("transform", function(d) { return "translate(" + newarc.centroid(d) + ")";  })
         .style("text-anchor", "middle")
-        .style("font-size", 15)
+        .style("font-size", 16)
 
         svg
         .selectAll('slices')
         .data(data_ready)
         .enter()
         .append('text')
-        .text(function(d){ return ((d.data.value/111*100).toFixed(1) + " %")})
+        .text(function(d){ return ((d.data.value/118*100).toFixed(1) + " %")})
         .attr("transform", function(d) { return "translate(" + newarc.centroid(d) + ")";  })
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .style("font-size", 15)
+        .style("font-size", 16)
 }    
 
 dataset.then((data)=>{
