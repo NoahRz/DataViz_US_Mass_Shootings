@@ -7,6 +7,8 @@ function reduce(data){
     for(var i=0; i<data.length;i++){
         var loc = data[i].location
         loc = loc.replace("\n","")
+        loc = loc.replace(/\s+/g,'');
+        console.log("Loc:",loc);
         if(loc in result) {
             result[loc] = result[loc] + 1
         
@@ -26,8 +28,8 @@ var dataset = USMassShootings.then(function(data){
 })
 
 
-var width = 500,
-    height = 500,
+var width = 300,
+    height = 300,
     margin = 40;
 
     

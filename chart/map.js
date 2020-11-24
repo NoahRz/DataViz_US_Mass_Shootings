@@ -15,7 +15,6 @@ var svgMap = d3.select("div#d3-US-map")
 .attr("width", w)
 .attr("height",h)
 .classed("svg-content", true)
-.attr("z-index", 2);
 
 var projection = d3v3.geo.albersUsa().translate([w/2, h/2]).scale([1000]);
 var path = d3v3.geo.path().projection(projection);
