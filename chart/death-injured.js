@@ -28,8 +28,8 @@ var dataset = USMassShootings.then(function(data){
 
 // set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 50},
-    width = 700 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    width = 460 - margin.left - margin.right,
+    height = 240 - margin.top - margin.bottom;
 
 // append the svg object to the appropriate div of the page
 var svg = d3.select("#death-injured")
