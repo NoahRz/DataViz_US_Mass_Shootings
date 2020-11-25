@@ -119,8 +119,8 @@ Promise.all([USStates, USMassShootings, dataset]).then(function(values){
             .style("opacity", 0.60)
 
 
-    var xCircle = 230
-    var xLabel = 380
+    var xCircle = 50
+    var xLabel = 150
     var yCircle = 330
 
     var max = maxCol(values[1]);
@@ -136,8 +136,8 @@ Promise.all([USStates, USMassShootings, dataset]).then(function(values){
     d3.select("div#d3-US-map")
         .append("svg")
         .attr("id", "svg-legend")
-        .attr("width", 460)
-        .attr("height", 460)
+        .attr("width", 360)
+        .attr("height", 360)
         .attr("z-index", 1)
         .selectAll("legend")
             .data(valuesToShow)

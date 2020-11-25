@@ -19,8 +19,8 @@ var dataset = USMassShootings.then(function(data){
 })
 
 
-var width = 400,
-    height = 400,
+var width = 300,
+    height = 300,
     margin = 40;
 
     
