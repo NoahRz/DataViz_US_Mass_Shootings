@@ -28,12 +28,11 @@ var dataset = USMassShootings.then(function(data){
 })
 
 
-var width = 350,
-    height = 350,
-    margin = 40;
+var width = 300,
+    height = 300
 
     
-var radius = Math.min(width, height) / 2 - margin;
+var radius = Math.min(width, height) / 2;
 
 
 var svg = d3.select("#places")
@@ -80,7 +79,7 @@ var svg = d3.select("#places")
         .text(function(d){ return (d.data.key)})
         .attr("transform", function(d) { return "translate(" + newarc.centroid(d) + ")";  })
         .style("text-anchor", "middle")
-        .style("font-size", 16)
+        .style("font-size", 14)
 
         svg
         .selectAll('slices')
@@ -91,7 +90,7 @@ var svg = d3.select("#places")
         .attr("transform", function(d) { return "translate(" + newarc.centroid(d) + ")";  })
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .style("font-size", 16)
+        .style("font-size", 14)
 }    
 
 dataset.then((data)=>{

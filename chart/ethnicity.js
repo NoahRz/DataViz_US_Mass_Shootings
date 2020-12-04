@@ -19,12 +19,11 @@ var dataset = USMassShootings.then(function(data){
 })
 
 
-var width = 350,
-    height = 350,
-    margin = 40;
+var width = 300,
+    height = 300
 
     
-var radius = Math.min(width, height) / 2 - margin;
+var radius = Math.min(width, height) / 2;
 
 
 var svg = d3.select("#ethnicity")

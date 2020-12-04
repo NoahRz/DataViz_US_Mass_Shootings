@@ -16,6 +16,7 @@ function reduce(data){ // group shooter by age class
             }
         }
     }
+    console.log(result);
     return d3.entries(result);
 } 
 
